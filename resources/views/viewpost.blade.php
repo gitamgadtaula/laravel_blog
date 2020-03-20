@@ -177,7 +177,7 @@ let myObj=new Vue({
     //         console.log(response);
     //         console.log(response.data);
     //
-    //         this.token=response.data.success.token;
+    //         this.=response.data.success.token;
     //         this.flag.tokenEvent=true;
     //       },
     //       (error)=>{

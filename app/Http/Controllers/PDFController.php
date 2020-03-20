@@ -13,10 +13,12 @@ use App\Exports\UsersExport;
 class PDFController extends Controller
 {
         public function exportpdf() {
-          $show = Post::all();
-          $data=['title'=>'this is a message'];
-          $pdf = PDF::loadView('email.name',$data);
-          return $pdf->download('myblogpdf.pdf');
+          $mydata= Post::all();
+          $data=['title'=>'this is a message',
+                  'mydata'=>$mydata];
+
+          $pdf = PDF::loadView('report.pdf',$data);
+          return $pdf->download('myblog.pdf');
         }
 
         public function exportxls(){

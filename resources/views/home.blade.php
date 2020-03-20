@@ -111,6 +111,7 @@
     <!-- ./col -->
   </div>
 
+
 <font color="red">{{ session()->get( 'msg' ) }}</font><br />
 <div class="addcategory" v-if="addCategory">
   <form action = "/addcategory" method="post">
