@@ -5,10 +5,12 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>@yield('title')</title>
+  <link rel="stylesheet" href="https://www.jsdelivr.com/package/npm/bootstrap-vue">
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- custom css that i made -->
   <link rel="stylesheet" href="{{asset('css/custom.css')}}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{{asset('assets/plugins/fontawesome-free/css/all.min.css')}}">
   <!-- Ionicons -->
@@ -742,8 +744,10 @@
 </aside>
 <!-- /.control-sidebar -->
 </div>
-<!-- ./wrapper -->
 
+<!-- ./wrapper -->
+</body>
+</html>
 <!-- jQuery -->
 <script src="{{asset('assets/plugins/jquery/jquery.min.js')}}"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -778,5 +782,6 @@ $.widget.bridge('uibutton', $.ui.button)
 <script src="{{asset('assets/dist/js/pages/dashboard.js')}}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{asset('assets/dist/js/demo.js')}}"></script>
+@yield('myscript')
 </body>
 </html>

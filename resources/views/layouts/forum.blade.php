@@ -4,18 +4,25 @@
   	<title>@yield('title')</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/991c42112a.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="{{asset('sidebar/css/style.css')}}">
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="{{asset('css/app.css')}}">
+    <link href="{{ asset('css/toastr.css') }}" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/991c42112a.js" crossorigin="anonymous"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+    @yield('styles')
   </head>
   <body>
-    <div class="mycontainer" style="position:relative">
+    <div class="mycontainer" style="position:relative;">
 		<div class="wrapper d-flex align-items-stretch">
+
 			<nav id="sidebar">
 				<div class="p-4 pt-5">
-		  		<a href="#" class="img logo rounded-circle mb-5" style="background-image: url( 'https://img.icons8.com/officel/2x/user.png');"></a>
+
+          {{--<img src="/avatars/{{Auth::user()->profile_image}}" class="img logo rounded-cirlce mb-5" style="border-radius:50%;">
+          --}}
+
 	        <ul class="list-unstyled components mb-5">
 	          <li class="active">
 	            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
@@ -57,8 +64,22 @@
 	        </ul>
 
 	        <div class="footer">
-	        	<p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-						  Made with love </p>
+	        <p style="color:green;">	<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+              @auth
+              <img src="/avatars/{{auth::user()->profile_image}}" style="height:40%;width:40%;">
+              <br />
+              {{auth::user()->email}} <br />
+                <a class="" href="{{ route('logout') }}"
+                   onclick="event.preventDefault();
+                                 document.getElementById('logout-form').submit();"> {{ __('Logout') }}</a>
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                  @csrf
+                </form>
+              @else
+              <a href="/login">Sign In</a></li>
+              @endauth
+            </p>
             </div>
 
 	      </div>
@@ -88,7 +109,7 @@
                     <a class="nav-link" href="/blog">Blog</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Portfolio</a>
+                    <a class="nav-link" href="/home">Dashboard</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contact</a>
@@ -97,18 +118,7 @@
             </div>
           </div>
         </nav>
-        @auth
-        Hello {{auth::user()->name}} !!
-          <a class="" href="{{ route('logout') }}"
-             onclick="event.preventDefault();
-                           document.getElementById('logout-form').submit();"> {{ __('Logout') }}</a>
 
-          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-            @csrf
-          </form>
-        @else
-        <a href="/login">Sign In</a></li>
-        @endauth
         @yield('mysection')
 
 

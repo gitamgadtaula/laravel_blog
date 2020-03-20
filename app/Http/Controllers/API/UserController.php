@@ -5,21 +5,28 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use Session;
+Use Redirect;
 class UserController extends Controller
 {
-  public $successStatus = 200;/**
-     * login api
-     *
-     * @return \Illuminate\Http\Response
-     */
+  public $successStatus = 200;
+  /**
+       * login api
+       *
+       * @return \Illuminate\Http\Response
+       */
+
+
      public function login(){
 
-        if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){
+        if(Auth::attempt(['email' => request('email'), 'password' => request('password')]))
+        {
             $user = Auth::user();
             $success['token'] =  $user->createToken('MyApp')-> accessToken;
             return response()->json(['success' => $success], $this-> successStatus);
         }
-        else{
+        else
+        {
             return response()->json(['error'=>'Unauthorised'], 401);
         }
     }
@@ -30,31 +37,33 @@ class UserController extends Controller
      */
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(),
+      // dd($request->all());
+         $validator = Validator::make($request->all(),
             ['name' => 'required',
             'email' => 'required|email',
-            'password' => 'required',
+            'password' => 'required|min:8',
             'c_password' => 'required|same:password',
             ]);
-if ($validator->fails())
-{
-  return response()->json(['error'=>$validator->errors()], 401);
-}
-$input = $request->all();
-        $input['password'] = bcrypt($input['password']);
 
-        $user = User::create($input);
+          if ($validator->fails())
+          {
+             return response()->json(['error'=>$validator->errors(),"msg"=>"validitaions did not work"], 401);
+             exit();
+          }
+          $input = $request->all();
+          $input['password'] = bcrypt($input['password']);
+          $user = User::create($input);
+          $activation_token =  $user->createToken('MyApp')-> accessToken;
+          User::where('email',$request->email)->update(['activation_token' =>$activation_token ]);
+          $success['token'] =  $activation_token;
+          $success['name'] =  $user->name;
 
-        $activation_token =  $user->createToken('MyApp')-> accessToken;
 
-          User::where('email',$request->email)->update([
-            'activation_token' =>$activation_token
-          ]);
-
-        $success['token'] =  $activation_token;
-        $success['name'] =  $user->name;
-
-return response()->json(['success'=>$success], $this-> successStatus);
+          return response([
+            'status' => 'success',
+            'data' => $user,
+            'token'=>$activation_token], 200);
+          // return response()->json(['success'=>$success], $this-> successStatus);
     }
 /**
      * details api
@@ -84,8 +93,9 @@ return response()->json(['success'=>$success], $this-> successStatus);
         $status = true;
 
       }
-
-      return response()->json(['msg'=>$msg,'status'=>$status]);
-
+      // return response()->json(['msg'=>$msg,'status'=>$status]);
+      $msg=Session::flash('msg', 'Successfully activated !');
+      return Redirect::back()->with('msg',$msg);
+      // return view('api.register');
     }
 }

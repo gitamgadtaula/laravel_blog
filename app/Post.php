@@ -19,5 +19,13 @@ class Post extends Model
       return $this->hasMany(Comment::class);
     }
 
+    public function category(){
+      return $this->belongsToMany(Category::class);
+    }
+    public function view()
+    {
+      return $this->belongsTo(View::class);
+    }
+
 
 }

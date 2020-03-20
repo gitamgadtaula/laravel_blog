@@ -66,7 +66,8 @@
       <!-- small box -->
       <div class="small-box bg-success">
         <div class="inner">
-          <h3>53<sup style="font-size: 20px">%</sup></h3>
+          <h3>{{$mypost->count()}}
+            {{--<sup style="font-size: 20px">total</sup>--}}</h3>
 
           <p>View blogs</p>
         </div>
@@ -82,14 +83,14 @@
       <div class="small-box bg-warning">
         <div class="inner">
 
-          <h3>44</h3>
+          <h3>{{$myuser->count()}}</h3>
 
           <p>User Registrations</p>
         </div>
         <div class="icon">
           <i class="ion ion-person-add"></i>
         </div>
-        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        <a href="#" class="small-box-footer">Manage users <i class="fas fa-arrow-circle-right"></i></a>
       </div>
     </div>
     <!-- ./col -->
@@ -97,19 +98,55 @@
       <!-- small box -->
       <div class="small-box bg-danger">
         <div class="inner">
-          <h3>65</h3>
+          <h3>{{$mycategory->count()}}</h3>
 
-          <p>Unique Visitors</p>
+          <p>Categories</p>
         </div>
         <div class="icon">
           <i class="ion ion-pie-graph"></i>
         </div>
-        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        <a href="#" class="small-box-footer" @click="addCategory=true">Add category <i class="fas fa-arrow-circle-right"></i></a>
       </div>
     </div>
     <!-- ./col -->
   </div>
+
+<font color="red">{{ session()->get( 'msg' ) }}</font><br />
+<div class="addcategory" v-if="addCategory">
+  <form action = "/addcategory" method="post">
+      @csrf
+      <label for="inputcategory" class="sr-only">Enter category</label>
+      <input type="text" class="form-control input-sm" name="category" placeholder="Enter your category">
+
+    <button type="submit" class="btn btn-primary mb-2">Submit</button>
+    </div>
+  </form>
+<span v-if="!showCategory" @click="showCategory=true">Show Categories </span>
+<span v-if="showCategory" class="animated fadeInDownBig slower">
+My categories :-
+
+<form>
+  <select>
+    @foreach ($mycategory as $index)
+      <option>  {{$index->category}} </option>
+    @endforeach
+</select>
+</form>
+</span>
 </section>
+@endsection
 
-
+@section('myscript')
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+new Vue({
+  el:'.content-wrapper',
+  data(){
+    return{
+      addCategory:false,
+      showCategory:false
+      }
+  }
+});
+</script>
 @endsection

@@ -29,6 +29,32 @@ Route::get('/deletedata/{blogId}','PostController@delete')->name('deletedata');;
 Route::post('/postcomment','CommentController@insert');
 Route::post('/postreply','ReplyController@insert');
 Route::get('/blog/{id}','PostController@fetchAll');
+Route::post('/addcategory','CategoryController@addCategory');
 Route::get('/test', function(){
   return view('/viewpost1');
 });
+
+//spatie role manager
+Route::group(['middleware' => ['auth']], function() {
+    Route::resource('roles','RoleController');
+    Route::resource('users','UserController');
+    Route::resource('products','ProductController');
+});
+
+//Api UI
+Route::get('/apiregister',function(){
+  return view('api.register');
+});
+
+Route::get('/apilogin', function(){
+  return view('api.login');
+});
+Route::get('/maps', function(){
+  return view('maps.maps');
+});
+
+Route::get('/image','ImageController@index');
+Route::post('/uploadimage',"ImageController@update");
+Route::get('/downloadpdf','PDFController@exportpdf');
+Route::get('/downloadxls','PDFController@exportxls');
+Route::get('/profile','ProfileController@index');

@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DRIVER', 'local'),
+    'default' => env('FILESYSTEM_DRIVER', 'public'),
 
     /*
     |--------------------------------------------------------------------------
@@ -49,10 +49,10 @@ return [
         ],
 
         'public' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
-            'visibility' => 'public',
+          'driver' => 'local',
+          'root' => public_path(),
+          'url' => env('/Users/gitamgadtaula/Desktop/internship-tasks/laravel/blog/app').'/public',
+          'visibility' => 'public',
         ],
 
         's3' => [

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Category;
+use App\Post;
+use App\User;
 
 class HomeController extends Controller
 {
@@ -23,6 +26,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $mycategory=Category::all();
+        $mypost=Post::all();
+        $myuser=User::all();
+        if(!\Gate::allows('isAdmin'))
+        {
+          // abort(403,"sorry only authorized admin can access");
+        }
+        return view('home',['mypost'=>$mypost,'myuser'=>$myuser,'mycategory'=>$mycategory]);
     }
 }
