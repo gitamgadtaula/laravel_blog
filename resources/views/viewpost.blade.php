@@ -39,12 +39,14 @@ textarea:hover{
 @section('mysection')
 
 
-<div class="toggle" v-if="!editEvent">
+<div class="toggle" v-if="!editEvent" style="position:relative;">
   <img src="/avatars/{{$mypost->user->profile_image}}" class="myLogo">
   {{$mypost->user->email}}
   <h1>{{$mypost->title}}</h1>
   <h2>{{$mypost->body}}</h2>
-  views:{{$mypost->views}} | @{{views}}
+  <div style="position:absolute;top:250px;right:7px;">
+    views:<span class="badge badge-danger">{{$mypost->views}}</span>
+  </div>
   <input type="hidden" value="{{$mypost->views}}" v-model="views">
   <br />
 
@@ -141,14 +143,14 @@ Please <a href="/login"> login </a> to leave your thoughts.. <hr>
 
 @section('script')
 <script>
-if(Session::has('msg'))
+if ( Session::has('msg') )
 {
   toastr.success('{{ session()->get( 'msg' ) }}');
 }
 </script>
 <script>
 
-let myObj=new Vue({
+new Vue({
   el: '.mycontainer',
   data: {
     replyEvent: false,
@@ -156,7 +158,8 @@ let myObj=new Vue({
     mydata:'hello',
     animatedClass:'bounceIn',
     categoryArray:[],
-    views:{{$mypost->views}}
+    views:{{$mypost->views}},
+    blogId:{{$mypost->id}}
   },
   methods:{
     animateOut(){
@@ -165,37 +168,37 @@ let myObj=new Vue({
         this.editEvent=false;
         this.animatedClass='bounceIn';
       }, 700);
-    }
+    },
 
-    // viewCounter(){
-    //   ++this.views;
-    //     axios.put('api/login',{
-    //       views: this.views
-    //     })
-    //     .then(
-    //       (response)=>{
-    //         console.log(response);
-    //         console.log(response.data);
-    //
-    //         this.=response.data.success.token;
-    //         this.flag.tokenEvent=true;
-    //       },
-    //       (error)=>{
-    //         console.log(error);
-    //         console.log('failed');
-    //       });
-    //
-    //
+    viewCounter(){
+      ++this.views;
+        axios.post('/viewcounter',{
+          views: this.views,
+          blogId: this.blogId
+        })
+        .then(
+          (response)=>{
+            console.log(response);
+            console.log('view added');
 
-  },
+          },
+          (error)=>{
+            console.log(error);
+            console.log('failed');
+          });
+  }
+},
+beforeCreated(){
+  this.mydata= "loading .........";
+},
 
     mounted() {
-      // this.viewCounter();
+      this.viewCounter();
 
       // this.viewCounter();
     }
 
 });
-// ++myObj.views;
+
 </script>
 @endsection

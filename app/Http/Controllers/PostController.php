@@ -72,9 +72,9 @@ class PostController extends Controller
 
     public function views(Request $req)
      {
-        $myView=Post::find($req->views);
+        $myView=Post::find($req->blogId);
         $myView->views=$req->views;
         $myView->save();
-        return response()->json(['success' => 'succesfully added via api']);
+        return response()->json(['success' => 'succesfully updated the views']);
      }
 }

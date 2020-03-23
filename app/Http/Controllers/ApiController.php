@@ -13,7 +13,6 @@ class ApiController extends Controller
     public function api()
     {
       return Post::all();
-
     }
 
     public function fetch($id)

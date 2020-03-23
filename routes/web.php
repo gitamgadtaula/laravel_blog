@@ -30,6 +30,7 @@ Route::post('/postcomment','CommentController@insert');
 Route::post('/postreply','ReplyController@insert');
 Route::get('/blog/{id}','PostController@fetchAll');
 Route::post('/addcategory','CategoryController@addCategory');
+Route::post('/viewcounter','PostController@views');
 Route::get('/test', function(){
   return view('/viewpost1');
 });
